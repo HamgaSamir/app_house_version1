@@ -1,0 +1,12 @@
+
+
+<div class="container mt-5">
+  <h1>Réserver ce créneau</h1>
+  <form method="POST" action="/book/<%= slotId %>">
+    <div class="mb-3">
+      <label for="student_name" class="form-label">Votre nom</label>
+      <input type="text" id="student_name" name="student_name" class="form-control" value="<%= session.userName %>" required>
+    </div>
+    <button class="btn btn-success" type="submit">Réserver</button>
+  </form>
+</div>

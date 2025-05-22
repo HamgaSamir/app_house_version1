@@ -1,0 +1,102 @@
+
+<% layout('layout') %>
+<div class="container mt-5">
+  <h4 class="mb-4">Dashboard Enseignant</h4>
+ 
+  <%- include('partials/header') %>
+
+  <div class="mb-3">
+  <h2>Bienvenue, <%= user.name %></h2>
+  </div>
+ <p>Contacter <%= user.name %> : </p>
+  <!-- Lien pour contacter -->
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=<%= user.email %>" target="_blank">
+  <%= user.email %>
+</a>
+
+
+  <h3>Vos créneaux (Total d'heures réservées : <%= totalHours %>)</h3>
+
+ 
+
+<!-- Bouton pour créer un créneau -->
+<% if (session.role === 'enseignant') { %>
+  <a href="/slots/create" class="btn btn-primary mb-3">Créer un créneau</a>
+<% } %>
+
+<table class="table table-bordered mt-4">
+  <thead class="table-primary">
+    <tr>
+      <th>Date</th>
+      <th>Heure</th>
+      <th>Étudiant</th>
+      <th>Statut</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% slots.forEach(slot => { %>
+      <tr>
+       <tr>
+        <!-- 🗓️ Date -->
+        <td><%= slot.date %></td>
+
+        <!-- ⏰ Heure (extrait HH:MM depuis HH:MM:SS) -->
+        <td><%= slot.time ? slot.time.slice(0, 5) : '—' %></td>
+
+        <!-- 👤 Étudiant -->
+        <td><%= slot.student_name || 'Non réservé' %></td>
+
+        <td>
+          <% if (slot.booking_id) { %>
+            <span class="badge bg-success">Réservé</span>
+          <% } else { %>
+            <span class="badge bg-secondary">Libre</span>
+          <% } %>
+        </td>
+        <td>
+          <% if (slot.booking_id) { %>
+            <!-- 🟡 Formulaire Rejet & Proposition -->
+            <form action="/reject-booking/<%= slot.booking_id %>" method="POST" class="d-flex gap-2 align-items-center">
+              <input type="datetime-local" name="proposed_date" class="form-control form-control-sm" required>
+              <button type="submit" class="btn btn-warning btn-sm">Rejeter & Proposer</button>
+            </form>
+          <% } else { %>
+            <span class="text-muted">Aucune action</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+
+  <hr>
+
+  <h3>Messages reçus <% if (unreadCount > 0) { %><span class="badge bg-danger"><%= unreadCount %></span><% } %></h3>
+
+  <% if (messages && messages.length > 0) { %>
+    <ul class="list-group mt-3">
+      <% messages.forEach(msg => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center
+          <% if (msg.lu === 0) { %>list-group-item-warning<% } %>">
+          <div>
+            <strong>De :</strong> <%= msg.sender_name %><br>
+            <strong>Message :</strong> <%= msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content %>
+          </div>
+          <a href="/message/<%= msg.id %>" class="btn btn-sm btn-primary">Voir</a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="text-muted">Vous n'avez aucun message.</p>
+  <% } %>
+
+  <div class="d-flex justify-content-end mb-3">
+  <a href="/messages/send" class="btn btn-primary me-2">📨 Envoyer un message</a>
+  <a href="/messages" class="btn btn-secondary">📥 Lire les messages</a>
+</div>
+
+</div>
+
+<%- include('partials/footer') %>

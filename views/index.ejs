@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+ 
+  <title>Accueil - Créneaux</title>
+  
+  
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <% if (session.userId) { %>
+    <div class="alert alert-info text-end">
+      Bonjour, <strong><%= session.userName %></strong> !
+    </div>
+  <% } %>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <a href="/dashboard" class="btn btn-outline-light btn-sm me-2">Mon tableau de bord</a>
+  <div class="container">
+    <a class="navbar-brand" href="/">RDV</a>
+    <div>
+      <% if (session.userId) { %>
+        <span class="navbar-text text-white">
+          Connecté : <strong><%= session.userName %></strong> (<%= session.role %>)
+        </span>
+        <% if (session.role === 'enseignant') { %>
+          <a href="/create-slot" class="btn btn-outline-light btn-sm me-2">Créer un créneau</a>
+        <% } %>
+        <a href="/logout" class="btn btn-outline-light btn-sm">Déconnexion</a>
+      <% } else { %>
+        <a href="/login" class="btn btn-outline-light btn-sm me-2">Connexion</a>
+        <a href="/register" class="btn btn-outline-light btn-sm">Inscription</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h2>Créneaux disponibles</h2>
+  <ul class="list-group mt-3">
+    <% slots.forEach(slot => { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span><%= slot.date %> à <%= slot.time %></span>
+        <% if (slot.available) { %>
+          <a href="/book/<%= slot.id %>" class="btn btn-primary btn-sm">Réserver</a>
+        <% } else { %>
+          <span class="badge bg-secondary">Réservé</span>
+        <% } %>
+      </li>
+    <% }); %>
+  </ul>
+</div>
+</body>
+</html>

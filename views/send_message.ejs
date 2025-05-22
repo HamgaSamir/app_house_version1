@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1>📨 Envoyer un message</h1>
+
+  <form action="/messages/send" method="POST">
+    <div class="mb-3">
+      <label for="receiver" class="form-label">Destinataire :</label>
+      <select class="form-select" name="receiver_id" required>
+        <% users.forEach(user => { %>
+          <option value="<%= user.id %>"><%= user.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="content" class="form-label">Message :</label>
+      <textarea class="form-control" name="content" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+    <a href="/dashboard" class="btn btn-secondary">Retour</a>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

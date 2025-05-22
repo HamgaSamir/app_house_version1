@@ -1,0 +1,32 @@
+
+
+<h2 class="text-center mb-4">Créer un compte</h2>
+
+<form action="/register" method="POST" class="mx-auto" style="max-width: 400px;">
+  <div class="mb-3">
+    <label class="form-label">Nom</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Mot de passe</label>
+    <input type="password" name="password" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Rôle</label>
+    <select name="role" class="form-select">
+      <option value="etudiant">Étudiant</option>
+      <option value="enseignant">Enseignant</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+</form>
+<% if (error) { %>
+  <div class="alert alert-danger"><%= error %></div>
+<% } %>
+<p class="text-center mt-3">
+  Vous avez déjà un compte ? <a href="/login">Se connecter</a>
+</p>

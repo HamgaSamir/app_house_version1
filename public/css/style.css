@@ -1,0 +1,15 @@
+body.custom-bg {
+  background: linear-gradient(to bottom right, #cfe9f7, #e0f7ff);
+  background-image: url('/images/icons-bg.png'); /* Tu peux mettre des motifs stylos/livres ici */
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 300px;
+  min-height: 100vh;
+}
+
+form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1>📧 Détail du message</h1>
+
+  <p><strong>De :</strong> <%= message.sender_name %></p>
+  <p><strong>À :</strong> <%= message.receiver_name %></p>
+  <p><strong>Date :</strong> <%= message.timestamp %></p>
+
+  <hr>
+
+  <p><%= message.content %></p>
+
+  <div class="mt-4">
+    <a href="/messages/" class="btn btn-secondary">⬅️ Retour</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
