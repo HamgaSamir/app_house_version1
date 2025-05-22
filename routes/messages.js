@@ -28,7 +28,7 @@ router.get('/', requireLogin, (req, res) => {
 });
 
 // Afficher le formulaire d'envoi
-router.get('/send', requireLogin, (req, res) => {
+router.get('/messages/send', requireLogin, (req, res) => {
   // Charger la liste des utilisateurs pour choisir le destinataire
   db.all('SELECT id, name FROM users WHERE id != ?', [req.session.userId], (err, users) => {
     if (err) {
@@ -45,22 +45,35 @@ router.get('/send', requireLogin, (req, res) => {
 });
 
 // Traitement de l’envoi
-router.post('/send', requireLogin, (req, res) => {
+router.post('/messages/send', requireLogin, (req, res) => {
   const sender_id = req.session.userId;
   const { receiver_id, content } = req.body;
 
-  db.run(`
-    INSERT INTO messages (sender_id, receiver_id, content, lu)
-    VALUES (?, ?, ?, 0)
-  `, [sender_id, receiver_id, content], (err) => {
+  if (!receiver_id || !content) {
+    return res.render('send_message', {
+      session: req.session,
+      title: "Envoyer un message",
+      error: "Veuillez remplir tous les champs."
+    });
+  }
+
+  const sql = `INSERT INTO messages (sender_id, receiver_id, content, lu)
+               VALUES (?, ?, ?, 0)`;
+
+  db.run(sql, [sender_id, receiver_id, content], function(err) {
     if (err) {
-      console.error("Erreur envoi message :", err);
-      return res.render('error', { message: "Erreur envoi message", title: "Erreur" });
+      console.error("Erreur insertion message :", err);
+      return res.render('send_message', {
+        session: req.session,
+        title: "Envoyer un message",
+        error: "Erreur lors de l'envoi du message."
+      });
     }
 
-    res.redirect('/messages');
+    res.redirect('/messages'); // redirection vers la liste des messages
   });
 });
+
 
 // Voir un message en détail
 router.get('/messages/:id', requireLogin, (req, res) => {
