@@ -4,8 +4,14 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../middlewares/jwt');
 
 exports.showLogin = (req, res) => {
-  res.render('login');
+  res.render('login', {
+    title: "Connexion",
+    error: null // ← ajoute cette ligne
+  });
 };
+
+
+
 
 exports.login = (req, res) => {
   const { email, password } = req.body;
