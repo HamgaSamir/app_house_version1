@@ -1,18 +1,23 @@
 
-<% layout('layout') %>
+
 <div class="container mt-5">
-  <h1 class="mb-4">Bienvenue, <%= user.name  || "Étudiant" %> !</h1>
+  <h1 class="mb-4">Bienvenue, <%= user && user.name ? user.name : "Étudiant" %> !</h1>
 
   <%- include('partials/header') %>
 
   <h2 class="mb-3">📅 Créneaux disponibles</h2>
-  <p>Contacter <%= user.name %> : </p>
-  <!-- Lien pour contacter -->
-<a href="https://mail.google.com/mail/?view=cm&fs=1&to=<%= user.email %>" target="_blank">
-  <%= user.email %>
-</a>
 
-  <% if (slots.length === 0) { %>
+  <p>Contacter <%= user && user.name ? user.name : "l'étudiant" %> : </p>
+  <!-- Lien pour contacter -->
+  <% if (user && user.email) { %>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<%= user.email %>" target="_blank" rel="noopener noreferrer">
+      <%= user.email %>
+    </a>
+  <% } else { %>
+    <span class="text-muted">Adresse email non disponible</span>
+  <% } %>
+
+  <% if (!slots || slots.length === 0) { %>
     <p class="text-muted">Aucun créneau disponible pour l'instant.</p>
   <% } else { %>
     <table class="table table-bordered">
@@ -27,13 +32,8 @@
       <tbody>
         <% slots.forEach(slot => { %>
           <tr>
-            <!-- 🗓️ Date -->
-        <td><%= slot.date %></td>
-
-
-
-        <!-- ⏰ Heure (extrait HH:MM depuis HH:MM:SS) -->
-        <td><%= slot.time ? slot.time.slice(0, 5) : '—' %></td>
+            <td><%= slot.date %></td>
+            <td><%= slot.time ? slot.time.slice(0, 5) : '—' %></td>
             <td><%= slot.teacher_name %></td>
             <td>
               <% if (!slot.booking_id) { %>
@@ -52,7 +52,12 @@
     </table>
   <% } %>
 
-  <h3>Messages reçus <% if (unreadCount > 0) { %><span class="badge bg-danger"><%= unreadCount %></span><% } %></h3>
+  <h3>
+    Messages reçus 
+    <% if (unreadCount > 0) { %>
+      <span class="badge bg-danger"><%= unreadCount %></span>
+    <% } %>
+  </h3>
 
   <% if (messages && messages.length > 0) { %>
     <ul class="list-group mt-3">
@@ -61,7 +66,8 @@
           <% if (msg.lu === 0) { %>list-group-item-warning<% } %>">
           <div>
             <strong>De :</strong> <%= msg.sender_name %><br>
-            <strong>Message :</strong> <%= msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content %>
+            <strong>Message :</strong> 
+            <%= msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content %>
           </div>
           <a href="/message/<%= msg.id %>" class="btn btn-sm btn-primary">Voir</a>
         </li>
@@ -72,13 +78,9 @@
   <% } %>
 
   <div class="d-flex justify-content-end mb-3">
-  <a href="/messages/send" class="btn btn-primary me-2">📨 Envoyer un message</a>
-  <a href="/messages" class="btn btn-secondary">📥 Lire les messages</a>
-  
-  
-
-
+    <a href="/messages/send" class="btn btn-primary me-2">📨 Envoyer un message</a>
+    <a href="/messages" class="btn btn-secondary">📥 Lire les messages</a>
+  </div>
 </div>
 
-</div>
 <%- include('partials/footer') %>
