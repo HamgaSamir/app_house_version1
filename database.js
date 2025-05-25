@@ -4,7 +4,7 @@ const db = mysql.createConnection({
   host: 'db4free.net',
   user: 'ocsupport',
   password: 'rayane2009+',
-  database: 'school_app'
+  database: 'school_app1'
 });
 
 db.connect((err) => {
