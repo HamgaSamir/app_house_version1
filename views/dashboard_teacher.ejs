@@ -38,7 +38,7 @@
       <tr>
        <tr>
         <!-- 🗓️ Date -->
-        <td><%= slot.date %></td>
+        <td><%= new Date(slot.date).toLocaleDateString('fr-FR')%></td>
 
         <!-- ⏰ Heure (extrait HH:MM depuis HH:MM:SS) -->
         <td><%= slot.time ? slot.time.slice(0, 5) : '—' %></td>
@@ -83,7 +83,7 @@
             <strong>De :</strong> <%= msg.sender_name %><br>
             <strong>Message :</strong> <%= msg.content.length > 50 ? msg.content.substring(0, 50) + '...' : msg.content %>
           </div>
-          <a href="/message/<%= msg.id %>" class="btn btn-sm btn-primary">Voir</a>
+          <a href="/messages/<%= msg.id %>" class="btn btn-sm btn-primary">Voir</a>
         </li>
       <% }) %>
     </ul>

@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/auth'));
 app.use('/dashboard', require('./routes/dashboard'));
 app.use('/slots', require('./routes/slots'));
-app.use('/bookings', require('./routes/bookings'));
+app.use('/', require('./routes/bookings'));
 app.use('/messages', require('./routes/messages'));
 app.use('/api', require('./routes/api')); // seulement si tu as des routes API
 

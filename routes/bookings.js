@@ -28,7 +28,7 @@ router.post('/cancel-booking/:id', requireRole('etudiant'), (req, res) => {
 });
 
 // Enseignant : Rejeter une réservation (simple)
-router.post('/reject-booking/:id', requireRole('enseignant'), (req, res) => {
+router.post('/cancel-booking/:id', requireRole('enseignant'), (req, res) => {
   const bookingId = req.params.id;
   const teacherId = req.session.userId;
 
@@ -73,7 +73,7 @@ router.get('/book/:id', requireRole('etudiant'), (req, res) => {
     }
 
     res.render('book_slot', {
-      slot: results[0],
+      slotId,
       session: req.session,
       title: "Réserver un créneau"
     });
